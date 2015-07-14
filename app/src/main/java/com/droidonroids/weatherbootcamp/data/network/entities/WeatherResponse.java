@@ -6,6 +6,8 @@ import java.util.ArrayList;
 public class WeatherResponse {
 	@SerializedName("weather") private ArrayList<Weather> weathers;
 	@SerializedName("main") private Main main;
+	@SerializedName("dt") private long date;
+	@SerializedName("dt_text") private String dateText;
 
 	public ArrayList<Weather> getWeathers() {
 		return this.weathers;
@@ -17,6 +19,14 @@ public class WeatherResponse {
 
 	public Main getMain() {
 		return this.main;
+	}
+
+	public long getDate() {
+		return date;
+	}
+
+	public String getDateText() {
+		return dateText;
 	}
 
 	public void setMain(Main main) {
