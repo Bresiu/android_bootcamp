@@ -1,5 +1,6 @@
 package com.droidonroids.weatherbootcamp.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import com.droidonroids.weatherbootcamp.R;
 import com.droidonroids.weatherbootcamp.data.network.entities.Weather;
 import com.droidonroids.weatherbootcamp.data.network.entities.WeatherResponse;
+import com.droidonroids.weatherbootcamp.helpers.image.AddressBuilder;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.zip.Inflater;
@@ -22,9 +25,11 @@ public class RecyclerViewWeatherAdapter extends RecyclerView.Adapter {
     private static final int ITEM_TYPE_SMALL_WEATHER = 1;
 
     private List<WeatherResponse> mWeathers;
+    private Picasso mPicasso;
 
-    public RecyclerViewWeatherAdapter(List<WeatherResponse> weathers) {
+    public RecyclerViewWeatherAdapter(List<WeatherResponse> weathers, Context context) {
         mWeathers = weathers;
+        mPicasso = Picasso.with(context);
     }
 
     @Override
@@ -71,12 +76,26 @@ public class RecyclerViewWeatherAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void bindBigWeather(BigWeatherHolder holder, WeatherResponse weather) {
+    private void bindBigWeather(BigWeatherHolder holder, WeatherResponse weatherResponse) {
+        holder.mTvDate.setText(weatherResponse.getDateText());
+        holder.mTvTemperature.setText(weatherResponse.getMain().getTemp() + "");
+        holder.mTvPressure.setText(weatherResponse.getMain().getPressure() + "");
+        holder.mTvMinTemp.setText(weatherResponse.getMain().getTempMin() + "");
+        holder.mTvMaxTemp.setText(weatherResponse.getMain().getTempMax() + "");
 
+        if (weatherResponse.getWeathers().size() > 0) {
+            String imageAddress = AddressBuilder.getImageAddress(weatherResponse.getWeathers().get(0).getIcon());
+            mPicasso.load(imageAddress).into(holder.mIvWeatherIcon);
+        }
     }
 
-    private void bindSmallWeather(WeatherItemHolder holder, WeatherResponse weather) {
-
+    private void bindSmallWeather(WeatherItemHolder holder, WeatherResponse weatherResponse) {
+        holder.mTvDate.setText(weatherResponse.getDateText());
+        holder.mTvTemperature.setText(weatherResponse.getMain().getTemp() + "");
+        if (weatherResponse.getWeathers().size() > 0) {
+            String imageAddress = AddressBuilder.getImageAddress(weatherResponse.getWeathers().get(0).getIcon());
+            mPicasso.load(imageAddress).into(holder.mIvWeatherIcon);
+        }
     }
 
     public static class WeatherItemHolder extends RecyclerView.ViewHolder {

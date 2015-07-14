@@ -3,6 +3,7 @@ package com.droidonroids.weatherbootcamp;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ListView;
@@ -91,8 +92,9 @@ public class MainActivity extends AppCompatActivity {
 						mListAdapter = new WeatherListViewAdapter(MainActivity.this, forecastResponse.getWeatherResponses());
 						mLvWeatherList.setAdapter(mListAdapter);
 
-//						mRecyclerAdapter = new RecyclerViewWeatherAdapter(forecastResponse.getWeatherResponses());
-//						mRvWeatherList.setAdapter(mRecyclerAdapter);
+						mRecyclerAdapter = new RecyclerViewWeatherAdapter(forecastResponse.getWeatherResponses(), MainActivity.this);
+						mRvWeatherList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+						mRvWeatherList.setAdapter(mRecyclerAdapter);
 					}
 				});
 	}
